@@ -4,7 +4,7 @@ import com.pa.operation.innovation.domain.model.lottery.aggregate.DrawLottery;
 import com.pa.operation.innovation.domain.model.lottery.valobj.Award;
 import com.pa.operation.innovation.domain.model.lottery.valobj.AwardPool;
 import com.pa.operation.innovation.domain.model.lottery.valobj.DrawLotteryContext;
-import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContext;
+import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContextDTO;
 import com.pa.operation.innovation.domain.service.AwardSendService;
 import com.pa.operation.innovation.domain.service.LotteryService;
 import com.pa.operation.innovation.domain.service.response.AwardSendResponse;
@@ -28,7 +28,7 @@ public class LotteryServiceImpl implements LotteryService {
     private AwardCounterFacade awardCounterFacade;
 
     @Override
-    public IssueResponse issueLottery(LotteryContext lotteryContext) {
+    public IssueResponse issueLottery(LotteryContextDTO lotteryContext) {
         DrawLottery drawLottery = drawLotteryRepo.getDrawLotteryById(lotteryContext.getLotteryId());//获取抽奖配置聚合根
         awardCounterFacade.incrTryCount(lotteryContext);//增加抽奖计数信息
         AwardPool awardPool = drawLottery.chooseAwardPool(buildDrawLotteryContext(drawLottery, lotteryContext));//选中奖池
@@ -36,7 +36,7 @@ public class LotteryServiceImpl implements LotteryService {
         return buildIssueResponse(awardSendService.sendAward(award, lotteryContext));//发出奖品实体
     }
 
-    private DrawLotteryContext buildDrawLotteryContext(DrawLottery drawLottery, LotteryContext lotteryContext) {
+    private DrawLotteryContext buildDrawLotteryContext(DrawLottery drawLottery, LotteryContextDTO lotteryContext) {
         return null;
     }
 

@@ -4,26 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 值对象-抽奖上下文
- * 带有用户抽奖时的场景信息（抽奖得分或抽奖时所在的城市）
- */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LotteryContext {
-
+public class LotteryContextDTO {
+    /**
+     * 用户ID
+     */
     private String userId;
+    /**
+     * 抽奖活动ID
+     */
     private Integer lotteryId;
-
+    /**
+     * 纬度
+     */
     private String lat;
+    /**
+     * 经度
+     */
     private String lng;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public int getLotteryId() {
-        return lotteryId;
-    }
 }

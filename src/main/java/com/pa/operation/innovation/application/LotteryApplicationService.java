@@ -3,7 +3,7 @@ package com.pa.operation.innovation.application;
 import com.pa.operation.innovation.common.Response;
 import com.pa.operation.innovation.common.ResponseCode;
 import com.pa.operation.innovation.common.ResponseMsg;
-import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContext;
+import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContextDTO;
 import com.pa.operation.innovation.domain.service.LotteryConditionService;
 import com.pa.operation.innovation.domain.service.LotteryRiskService;
 import com.pa.operation.innovation.domain.service.LotteryService;
@@ -27,15 +27,15 @@ public class LotteryApplicationService {
     private LotteryService lotteryService;
 
     //用户参与抽奖活动
-    public Response<PrizeInfo, ErrorData> participateLottery(LotteryContext lotteryContext) {
+    public Response<PrizeInfo, ErrorData> participateLottery(LotteryContextDTO lotteryContextDTO) {
         //校验用户登录信息
-        validateLoginInfo(lotteryContext);
+        validateLoginInfo(lotteryContextDTO);
         //校验风控
-        RiskAccessToken riskToken = riskService.acquire(buildRiskReq(lotteryContext));
+        RiskAccessToken riskToken = riskService.acquire(buildRiskReq(lotteryContextDTO));
         //活动准入检查
-        LotteryConditionResult conditionResult = conditionService.checkLotteryCondition(lotteryContext.getLotteryId(),lotteryContext.getUserId());
+        LotteryConditionResult conditionResult = conditionService.checkLotteryCondition(lotteryContextDTO.getLotteryId(),lotteryContextDTO.getUserId());
         //抽奖并返回结果
-        IssueResponse issueResponse = lotteryService.issueLottery(lotteryContext);
+        IssueResponse issueResponse = lotteryService.issueLottery(lotteryContextDTO);
         if(issueResponse!=null && issueResponse.getCode()==IssueResponse.OK) {
             return buildSuccessResponse(issueResponse.getPrizeInfo());
         } else {
@@ -43,11 +43,11 @@ public class LotteryApplicationService {
         }
     }
 
-    private RiskRequest buildRiskReq(LotteryContext lotteryContext) {
+    private RiskRequest buildRiskReq(LotteryContextDTO lotteryContext) {
         return null;
     }
 
-    private void validateLoginInfo(LotteryContext lotteryContext){
+    private void validateLoginInfo(LotteryContextDTO lotteryContext){
         return;
     }
     private Response<PrizeInfo, ErrorData> buildErrorResponse (int code, String msg){
