@@ -12,6 +12,7 @@ import com.pa.operation.innovation.domain.service.response.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * 应用服务-抽奖
@@ -36,7 +37,7 @@ public class LotteryApplicationService {
         LotteryConditionResult conditionResult = conditionService.checkLotteryCondition(lotteryContext.getLotteryId(),lotteryContext.getUserId());
         //抽奖并返回结果
         IssueResponse issueResponse = lotteryService.issueLottery(lotteryContext);
-        if(issueResponse!=null && issueResponse.getCode() == IssueResponse.OK) {
+        if(issueResponse!=null && Objects.equals(issueResponse.getCode(), IssueResponse.OK)) {
             return buildSuccessResponse(issueResponse.getPrizeInfo());
         } else {
             return buildErrorResponse(ResponseCode.ISSUE_LOTTERY_FAIL, ResponseMsg.ISSUE_LOTTERY_FAIL);
