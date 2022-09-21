@@ -1,10 +1,8 @@
 package com.pa.operation.innovation.domain.service.impl;
 
+import com.pa.operation.innovation.domain.event.AwardSent;
 import com.pa.operation.innovation.domain.model.lottery.aggregate.DrawLottery;
-import com.pa.operation.innovation.domain.model.lottery.valobj.Award;
-import com.pa.operation.innovation.domain.model.lottery.valobj.AwardPool;
-import com.pa.operation.innovation.domain.model.lottery.valobj.DrawLotteryContext;
-import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContextDTO;
+import com.pa.operation.innovation.domain.model.lottery.valobj.*;
 import com.pa.operation.innovation.domain.service.AwardSendService;
 import com.pa.operation.innovation.domain.service.LotteryService;
 import com.pa.operation.innovation.domain.service.response.AwardSendResponse;
@@ -21,7 +19,7 @@ public class LotteryServiceImpl implements LotteryService {
     @Resource
     private DrawLotteryRepository drawLotteryRepo;
     @Resource
-    private UserCityInfoFacade UserCityInfoFacade;
+    private UserCityInfoFacade userCityInfoFacade;
     @Resource
     private AwardSendService awardSendService;
     @Resource
@@ -29,15 +27,30 @@ public class LotteryServiceImpl implements LotteryService {
 
     @Override
     public IssueResponse issueLottery(LotteryContextDTO lotteryContext) {
-        DrawLottery drawLottery = drawLotteryRepo.getDrawLotteryById(lotteryContext.getLotteryId());//获取抽奖配置聚合根
-        awardCounterFacade.incrTryCount(lotteryContext);//增加抽奖计数信息
-        AwardPool awardPool = drawLottery.chooseAwardPool(buildDrawLotteryContext(drawLottery, lotteryContext));//选中奖池
-        Award award = awardPool.randomChooseAward();//选中奖品
-        return buildIssueResponse(awardSendService.sendAward(award, lotteryContext));//发出奖品实体
+        //获取抽奖配置聚合根
+        DrawLottery drawLottery = drawLotteryRepo.getDrawLotteryById(lotteryContext.getLotteryId());
+        //增加抽奖计数信息
+        awardCounterFacade.incrTryCount(lotteryContext);
+        //选中奖池
+        AwardPool awardPool = drawLottery.chooseAwardPool(buildDrawLotteryContext(drawLottery, lotteryContext));
+        //选中奖品
+        Award award = awardPool.randomChooseAward();
+        //发出奖品实体
+        return buildIssueResponse(awardSendService.sendAward(award, lotteryContext));
     }
 
-    private DrawLotteryContext buildDrawLotteryContext(DrawLottery drawLottery, LotteryContextDTO lotteryContext) {
-        return null;
+    /**
+     *
+     * @param drawLottery
+     * @param lotteryContextDTO
+     * @return
+     */
+    private DrawLotteryContext buildDrawLotteryContext(DrawLottery drawLottery, LotteryContextDTO lotteryContextDTO) {
+        // 根据用户id和抽奖活动ID查询用户得分
+        GameScore gameScore = new GameScore();
+        // 根据经纬度查询用户位置
+        MtCityInfo mtCityInfo = userCityInfoFacade.getMtCityInfo(lotteryContextDTO);
+        return new DrawLotteryContext(mtCityInfo, gameScore);
     }
 
     private IssueResponse buildIssueResponse(AwardSendResponse awardSendResponse) {
