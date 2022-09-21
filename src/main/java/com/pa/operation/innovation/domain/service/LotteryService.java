@@ -1,6 +1,6 @@
 package com.pa.operation.innovation.domain.service;
 
-import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContextDTO;
+import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContext;
 import com.pa.operation.innovation.domain.service.response.IssueResponse;
 
 /**
@@ -9,6 +9,6 @@ import com.pa.operation.innovation.domain.service.response.IssueResponse;
  */
 public interface LotteryService {
 
-    IssueResponse issueLottery(LotteryContextDTO lotteryContext);
+    IssueResponse issueLottery(LotteryContext lotteryContext);
 
 }

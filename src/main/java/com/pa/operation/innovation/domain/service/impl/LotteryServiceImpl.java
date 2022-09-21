@@ -1,6 +1,5 @@
 package com.pa.operation.innovation.domain.service.impl;
 
-import com.pa.operation.innovation.domain.event.AwardSent;
 import com.pa.operation.innovation.domain.model.lottery.aggregate.DrawLottery;
 import com.pa.operation.innovation.domain.model.lottery.valobj.*;
 import com.pa.operation.innovation.domain.service.AwardSendService;
@@ -26,7 +25,7 @@ public class LotteryServiceImpl implements LotteryService {
     private AwardCounterFacade awardCounterFacade;
 
     @Override
-    public IssueResponse issueLottery(LotteryContextDTO lotteryContext) {
+    public IssueResponse issueLottery(LotteryContext lotteryContext) {
         //获取抽奖配置聚合根
         DrawLottery drawLottery = drawLotteryRepo.getDrawLotteryById(lotteryContext.getLotteryId());
         //增加抽奖计数信息
@@ -34,7 +33,7 @@ public class LotteryServiceImpl implements LotteryService {
         //选中奖池
         AwardPool awardPool = drawLottery.chooseAwardPool(buildDrawLotteryContext(drawLottery, lotteryContext));
         //选中奖品
-        Award award = awardPool.randomChooseAward();
+        Award award = awardPool.randomGetAward();
         //发出奖品实体
         return buildIssueResponse(awardSendService.sendAward(award, lotteryContext));
     }
@@ -45,7 +44,7 @@ public class LotteryServiceImpl implements LotteryService {
      * @param lotteryContextDTO
      * @return
      */
-    private DrawLotteryContext buildDrawLotteryContext(DrawLottery drawLottery, LotteryContextDTO lotteryContextDTO) {
+    private DrawLotteryContext buildDrawLotteryContext(DrawLottery drawLottery, LotteryContext lotteryContextDTO) {
         // 根据用户id和抽奖活动ID查询用户得分
         GameScore gameScore = new GameScore();
         // 根据经纬度查询用户位置

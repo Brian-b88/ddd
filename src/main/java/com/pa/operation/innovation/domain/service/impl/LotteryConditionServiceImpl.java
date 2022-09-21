@@ -1,5 +1,6 @@
 package com.pa.operation.innovation.domain.service.impl;
 
+import com.pa.operation.innovation.domain.model.lottery.valobj.UserGroup;
 import com.pa.operation.innovation.domain.service.LotteryConditionService;
 import com.pa.operation.innovation.domain.service.response.LotteryConditionResult;
 import org.springframework.stereotype.Service;

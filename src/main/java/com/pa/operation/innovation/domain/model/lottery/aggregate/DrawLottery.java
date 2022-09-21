@@ -11,12 +11,12 @@ import java.util.List;
  */
 public class DrawLottery {
 
-    private int lotteryId; //抽奖id
+    private Long lotteryId; //抽奖id
     private List<AwardPool> awardPools; //奖池列表
 
     //getter & setter
-    public void setLotteryId(int lotteryId) {
-        if(lotteryId<=0){
+    public void setLotteryId(Long lotteryId) {
+        if(lotteryId == null || lotteryId<=0){
             throw new IllegalArgumentException("非法的抽奖id");
         }
         this.lotteryId = lotteryId;
@@ -42,7 +42,11 @@ public class DrawLottery {
     }
 
     private AwardPool chooseAwardPoolByScore(List<AwardPool> awardPools, GameScore gameScore) {
-
+        for(AwardPool awardPool: awardPools) {
+            if(awardPool.matchedScore(gameScore.getScore())) {
+                return awardPool;
+            }
+        }
         return null;
     }
 }

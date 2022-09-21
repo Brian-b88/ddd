@@ -1,6 +1,6 @@
 package com.pa.operation.innovation.interfaces.lottery.facade;
 
-import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContextDTO;
+import com.pa.operation.innovation.domain.model.lottery.valobj.LotteryContext;
 import com.pa.operation.innovation.domain.model.lottery.valobj.MtCityInfo;
 import com.pa.operation.innovation.sao.LbsSao;
 import com.pa.operation.innovation.sao.request.LbsRequest;
@@ -15,7 +15,7 @@ public class UserCityInfoFacade {
     @Resource
     private LbsSao lbsSao;//外部用户城市信息RPC服务
 
-    public MtCityInfo getMtCityInfo(LotteryContextDTO context) {
+    public MtCityInfo getMtCityInfo(LotteryContext context) {
         LbsRequest lbsReq = new LbsRequest();
         lbsReq.setLat(context.getLat());
         lbsReq.setLng(context.getLng());

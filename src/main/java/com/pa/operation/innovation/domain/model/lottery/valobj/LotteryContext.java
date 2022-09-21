@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LotteryContextDTO {
+public class LotteryContext {
     /**
      * 用户ID
      */
